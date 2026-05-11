@@ -78,6 +78,17 @@
     }
 }
 
+@keyframes flyIn {
+    0% {
+        transform: translateY(100vh) rotate(-45deg) scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(-20deg) scale(1);
+        opacity: 1;
+    }
+}
+
 html, body {
     background-color: black;
     overflow: hidden;
@@ -119,31 +130,17 @@ html, body {
     margin-bottom: 30px;
 }
 
-.nike-logo-placeholder {
+.nike-logo {
     width: 80px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: 'Norwester', sans-serif;
-    font-size: 24px;
-    letter-spacing: 2px;
-    border: 2px solid white;
+    object-fit: contain;
     animation: pulse 1.5s ease-in-out infinite;
 }
 
-.jordan-logo-placeholder {
+.jordan-logo {
     width: 50px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: 'Norwester', sans-serif;
-    font-size: 16px;
-    letter-spacing: 1px;
-    border: 2px solid white;
+    object-fit: contain;
     animation: pulse 1.5s ease-in-out infinite 0.2s;
 }
 
@@ -179,6 +176,35 @@ html, body {
     background: white;
     width: 0%;
     transition: width 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .loader-logos {
+    gap: 15px;
+  }
+  
+  .nike-logo {
+    width: 60px;
+    height: 30px;
+  }
+  
+  .jordan-logo {
+    width: 40px;
+    height: 30px;
+  }
+  
+  .logo-separator {
+    font-size: 24px;
+  }
+  
+  .loader-text span {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  
+  .loader-bar {
+    width: 150px;
+  }
 }
 
 /* MAIN */
@@ -287,6 +313,7 @@ html, body {
   transform: rotate(-20deg);
   cursor: pointer;
   transition: transform 0.3s ease;
+  animation: flyIn 1s ease-out;
 }
 
 .img img:hover {
@@ -542,24 +569,34 @@ html, body {
   }
 
   .details {
+    position: absolute;
     left: 50%;
-    top: 15%;
-    transform: translateX(-50%);
+    top: 70%;
+    bottom: auto;
+    width: min(90vw, 380px);
+    transform: translate(-50%, -50%);
     text-align: center;
   }
   
+  .details h1 {
+    line-height: 1.05;
+  }
+  
   .shoe-desc {
-    max-width: 350px;
+    max-width: 100%;
+    margin: 0 auto;
   }
   
   .stripes {
     left: 50%;
-    opacity: 0.3;
+    top: 12%;
+    transform: translateX(-50%);
   }
   
   .img {
     right: 50%;
-    bottom: 40px;
+    top: 30%;
+    bottom: auto;
     transform: translateX(50%);
   }
   
@@ -594,5 +631,119 @@ html, body {
   .bottom-jordan-logo {
     bottom: 20px;
     right: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .main .details {
+    position: absolute;
+    left: 50%;
+    top: 68%;
+    bottom: auto;
+    width: min(90vw, 380px);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 20;
+  }
+
+  .main .details h1 {
+    font-size: clamp(20px, 6vw, 40px);
+    line-height: 1.05;
+  }
+
+  .shoe-desc {
+    font-size: 11px;
+    max-width: 280px;
+    margin: 10px auto 0;
+  }
+
+  .stripes {
+    top: 0%;
+    gap: 10px;
+  }
+
+  #stripe1 {
+    height: 45vh;
+  }
+
+  #stripe2 {
+    height: 40vh;
+  }
+
+  #stripe3 {
+    height: 35vh;
+  }
+
+  #stripe4 {
+    height: 33vh;
+  }
+
+  #stripe5 {
+    height: 30vh;
+  }
+
+  .img {
+    top: 15%;
+    right: 55%;
+    transform: translateX(50%);
+  }
+
+  .img img {
+    width: 350px;
+    max-width: 90vw;
+  }
+
+  .shoe-panel {
+    left: 10px;
+    bottom: 60px;
+  }
+
+  .panel-shoe img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .bottom-jordan-logo {
+    width: 60px;
+    height: 30px;
+  }
+
+  .side-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .shoe-panel {
+    position: fixed;
+    left: 15px;
+    bottom: 70px;
+    top: auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    padding: 8px;
+    width: auto;
+    max-width: 90vw;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    border-radius: 12px;
+    z-index: 100;
+  }
+
+  .panel-shoe {
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+  }
+
+  .panel-shoe img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }

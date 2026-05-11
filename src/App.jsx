@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams, Link, useNavigate } from 'react-router-dom';
-import shoeAJ1OGC from './assets/AJ1OGC.png';
-import shoeAJ1OWUB from './assets/AJ1OWUB.png';
-import shoeAJ1TSO from './assets/AJ1TSO.png';
-import shoeAJ4YT from './assets/AJ4YT.png';
-import jordanLogo from './assets/jordan.jpg';
 import './App.css';
 
 // Sound Effects using Web Audio API
@@ -81,7 +76,7 @@ const shoes = [
     type: 'HIGH',
     name: 'OG CHICAGO',
     color: '#660413',
-    img: shoeAJ1OGC,
+    img: '/images/shoes/AJ1OGC.png',
     desc: 'The 1985 original that started it all. The Chicago colorway features the iconic red, white, and black that defined basketball footwear history. Worn by Michael Jordan during his rookie season, this silhouette revolutionized the game with its premium leather construction and Air cushioning technology. The "Banned" story only added to its legendary status, making it one of the most sought-after sneakers of all time.',
     sideTag: '1985 OG'
   },
@@ -91,7 +86,7 @@ const shoes = [
     type: 'HIGH',
     name: 'OFF-WHITE UNC',
     color: '#1480a7',
-    img: shoeAJ1OWUB,
+    img: '/images/shoes/AJ1OWUB.png',
     desc: 'Virgil Abloh\'s解构 masterpiece. The University Blue colorway features Off-White\'s signature deconstructed aesthetic with exposed foam, industrial text, and the iconic zip-tie. A collaboration that bridged streetwear and high fashion, creating one of the most influential sneakers of the modern era.',
     sideTag: 'THE TEN'
   },
@@ -101,7 +96,7 @@ const shoes = [
     type: 'LOW',
     name: 'TRAVIS OLIVE',
     color: '#3c3527',
-    img: shoeAJ1TSO,
+    img: '/images/shoes/AJ1TSO.png',
     desc: 'Travis Scott\'s signature take on the AJ1 Low. Featuring reversed Swoosh branding, premium suede materials in earthy olive tones, and Cactus Jack detailing. This collaboration represents the fusion of Houston hip-hop culture with Jordan Brand heritage.',
     sideTag: 'CACTUS JACK'
   },
@@ -111,7 +106,7 @@ const shoes = [
     type: 'RETRO',
     name: 'THUNDER',
     color: '#D4AF37',
-    img: shoeAJ4YT,
+    img: '/images/shoes/AJ4YT.png',
     desc: 'Striking yellow and black contrast on the iconic AJ4 silhouette. The Thunder colorway brings bold energy to Tinker Hatfield\'s 1989 design, featuring mesh panels, signature wing eyelets, and visible Air cushioning. A statement piece that commands attention on and off the court.',
     sideTag: '2006 RETRO'
   }
@@ -161,9 +156,9 @@ function LoadingScreen({ onComplete }) {
   return (
     <div className={`loader ${hidden ? 'hidden' : ''}`}>
       <div className="loader-logos">
-        <div className="nike-logo-placeholder">NIKE</div>
+        <img src="/images/logo/nike.jpg" alt="Nike" className="nike-logo" />
         <span className="logo-separator">|</span>
-        <div className="jordan-logo-placeholder">JORDAN</div>
+        <img src="/images/logo/jordan.jpg" alt="Jordan" className="jordan-logo" />
       </div>
       <div className="loader-text">
         <span>{loadingWord}</span>
@@ -211,13 +206,52 @@ function ShoeShowcase() {
       }
     };
 
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    };
+
+    const handleSwipe = () => {
+      const currentIndex = shoes.findIndex(s => s.id === shoeId);
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // Swiped left - go to next shoe
+          const nextIndex = (currentIndex + 1) % shoes.length;
+          playSwoosh();
+          navigate(`/${shoes[nextIndex].id}`);
+        } else {
+          // Swiped right - go to previous shoe
+          const prevIndex = (currentIndex - 1 + shoes.length) % shoes.length;
+          playSwoosh();
+          navigate(`/${shoes[prevIndex].id}`);
+        }
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleTouchStart, false);
+    window.addEventListener('touchend', handleTouchEnd, false);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
   }, [shoeId, navigate, panelOpen]);
 
   return (
     <div className="main" style={{ '--accent-color': shoe.color, '--shoe-color': shoe.color }}>
-      <img src={jordanLogo} alt="Jordan" className="bottom-jordan-logo" />
+      <img src="/images/logo/jordan.jpg" alt="Jordan" className="bottom-jordan-logo" />
       
       <div className="details" key={shoe.id}>
         <h1>{shoe.model}</h1>
@@ -234,7 +268,7 @@ function ShoeShowcase() {
         <div id="stripe5"></div>
       </div>
 
-      <div className="img">
+      <div className="img" key={`img-${shoe.id}`}>
         <img src={shoe.img} alt={shoe.name} />
       </div>
 
