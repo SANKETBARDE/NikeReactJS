@@ -37,3 +37,30 @@ NikeReactJS/
 ├── package.json
 ├── vite.config.js
 └── README.md
+
+## ⚙️ Installation and Setup
+
+```bash
+git clone https://github.com/SANKETBARDE/NikeReactJS.git
+cd NikeReactJS
+npm install
+npm run dev
+```
+
+Open in browser:
+
+```bash
+http://localhost:5173
+```
+
+## 🏗️ Production Build
+
+```bash
+npm run build
+```
+
+## 👀 Preview Production Build
+
+```bash
+npm run preview
+```
